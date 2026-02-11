@@ -2,10 +2,14 @@
 
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { useUserInfo } from "@/contexts/UserInfoContext";
+import { useRouter } from "next/navigation";
 
 export const useAuthForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { setUserInfo } = useUserInfo();
+  const router = useRouter();
 
   const [loginFormData, setLoginFormData] = useState({
     username: "",
@@ -20,11 +24,11 @@ export const useAuthForm = () => {
   });
 
   // Test
-  const testData = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log(loginFormData, "loginFormData");
-    console.log(registerFormData, "registerFormData");
-  };
+  // const testData = (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   console.log(loginFormData, "loginFormData");
+  //   console.log(registerFormData, "registerFormData");
+  // };
 
   // Login
   const loginHandleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -46,19 +50,25 @@ export const useAuthForm = () => {
 
       if (!response.ok) {
         setError(data.message);
+        toast.error(data.message);
         throw new Error(data.message);
       }
 
+      setUserInfo(data.user);
+
       setError(null);
 
-      toast.success("Login successful, redirecting...");
+      toast.success("Login successful");
 
-      window.location.href = "/";
       // limpiar el formulario
       setLoginFormData({
         username: "",
         password: "",
       });
+
+      // window.location.href = "/";
+      router.push("/");
+      router.refresh();
     } catch (error) {
       console.error("Error de red:", error);
     } finally {
@@ -94,9 +104,7 @@ export const useAuthForm = () => {
 
       setError(null);
 
-      toast.success("Registration successful, redirecting...");
-
-      window.location.href = "/";
+      toast.success("Registration successful");
 
       // limpiar el formulario
       setRegisterFormData({
@@ -105,6 +113,9 @@ export const useAuthForm = () => {
         password: "",
         confirmPassword: "",
       });
+
+      router.push("/");
+      router.refresh();
     } catch (error) {
       console.error("Error de red:", error);
     } finally {
@@ -136,7 +147,8 @@ export const useAuthForm = () => {
       // setError(null);
 
       // toast.success("Logout successful, redirecting...");
-      window.location.href = "/auth";
+      router.push("/auth");
+      router.refresh();
     } catch (error) {
       console.error("Error de red:", error);
     }
@@ -149,7 +161,7 @@ export const useAuthForm = () => {
     setLoginFormData,
     registerFormData,
     setRegisterFormData,
-    testData,
+    // testData,
     loginHandleSubmit,
     registerHandleSubmit,
     error,
