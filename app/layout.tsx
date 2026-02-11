@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import localFont from "next/font/local";
 import ToggleTheme from "@/components/ToggleTheme";
 import { Toaster } from "react-hot-toast";
+import { UserInfoProvider } from "@/contexts/UserInfoContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -37,17 +38,19 @@ export default function RootLayout({
       <body
         className={`${snPro.variable} ${geistSans.variable} ${geistMono.variable}  antialiased`}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <ToggleTheme />
-          <Toaster />
+        <UserInfoProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <ToggleTheme />
+            <Toaster />
 
-          {children}
-        </ThemeProvider>
+            {children}
+          </ThemeProvider>
+        </UserInfoProvider>
       </body>
     </html>
   );
