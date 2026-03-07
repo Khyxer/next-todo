@@ -20,7 +20,7 @@ export default function Home() {
   };
 
   return (
-    <div className="h-[400vh] w-full">
+    <div className="w-full">
       <HeaderMain />
 
       {/* Información del usuario */}
@@ -30,7 +30,7 @@ export default function Home() {
           {isLoading ? (
             <div className="w-46 h-8 bg-neutral-200 dark:bg-neutral-800 rounded animate-pulse"></div>
           ) : (
-            <h2 className="text-3xl font-semibold">{userInfo?.username}</h2>
+            <h2 className="text-3xl font-semibold">@{userInfo?.username}</h2>
           )}
         </div>
         {isLoading ? (

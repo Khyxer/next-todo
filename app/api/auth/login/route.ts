@@ -13,7 +13,6 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ message: "Missing fields" }, { status: 400 });
     }
 
-    //buscar en la bd
     const users = await sql`
       SELECT * FROM users WHERE username = ${username}
     `;
@@ -27,7 +26,6 @@ export async function POST(request: NextRequest) {
 
     const user = users[0];
 
-    // Verificar contraseña
     const isValidPassword = await bcrypt.compare(password, user.password);
 
     if (!isValidPassword) {
@@ -37,7 +35,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Generar JWT
     const token = jwt.sign(
       {
         userId: user.id,
@@ -57,6 +54,14 @@ export async function POST(request: NextRequest) {
           id: user.id,
           username: user.username,
           email: user.email,
+          created_at: user.created_at,
+          updated_at: user.updated_at,
+          profile_picture: user.profile_picture,
+          banner_picture: user.banner_picture,
+          preferred_theme: user.preferred_theme,
+          is_active: user.is_active,
+          is_admin: user.is_admin,
+          is_banned: user.is_banned,
         },
       },
       { status: 200 },

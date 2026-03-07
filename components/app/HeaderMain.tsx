@@ -12,20 +12,29 @@ export default function HeaderMain() {
   const [profileImageLoaded, setProfileImageLoaded] = useState(false);
   const [bannerImageLoaded, setBannerImageLoaded] = useState(false);
 
+  // ✅ Validar que las URLs existan y sean válidas
+  const hasValidProfilePicture =
+    userInfo?.profile_picture && userInfo.profile_picture.trim() !== "";
+  const hasValidBannerPicture =
+    userInfo?.banner_picture && userInfo.banner_picture.trim() !== "";
+
   return (
     <header className="w-full max-h-[250px] relative select-none">
       {/* Profile Picture */}
       <div className="absolute w-28 aspect-square rounded-full bottom-0 left-14 transform translate-y-1/2 z-10 ring-6 ring-white dark:ring-neutral-950 overflow-hidden">
         <div className="relative w-full h-full">
-          {(isLoading || !profileImageLoaded) && !profileError && (
-            <div className="absolute inset-0 bg-neutral-200 dark:bg-neutral-800 animate-pulse flex items-center justify-center">
-              <User className="w-16 h-16 text-neutral-300 dark:text-neutral-700" />
-            </div>
-          )}
+          {/* Skeleton mientras carga */}
+          {(isLoading || (!profileImageLoaded && hasValidProfilePicture)) &&
+            !profileError && (
+              <div className="absolute inset-0 bg-neutral-200 dark:bg-neutral-800 animate-pulse flex items-center justify-center">
+                <User className="w-16 h-16 text-neutral-300 dark:text-neutral-700" />
+              </div>
+            )}
 
-          {!isLoading && !profileError && (
+          {/* Imagen - solo renderizar si hay URL válida */}
+          {!isLoading && hasValidProfilePicture && !profileError && (
             <Image
-              src={userInfo?.profilePicture}
+              src={userInfo.profile_picture}
               alt="Profile"
               width={128}
               height={128}
@@ -38,7 +47,8 @@ export default function HeaderMain() {
             />
           )}
 
-          {profileError && (
+          {/* Fallback - mostrar cuando no hay imagen o hay error */}
+          {(!hasValidProfilePicture || profileError) && !isLoading && (
             <div className="absolute inset-0 bg-neutral-200 dark:bg-neutral-800 flex items-center justify-center">
               <User className="w-16 h-16 text-neutral-400 dark:text-neutral-600" />
             </div>
@@ -48,15 +58,18 @@ export default function HeaderMain() {
 
       {/* Banner */}
       <div className="relative w-full h-[250px] overflow-hidden rounded-b-4xl">
-        {(isLoading || !bannerImageLoaded) && !bannerError && (
-          <div className="absolute inset-0 bg-neutral-300 dark:bg-neutral-800 animate-pulse flex items-center justify-center">
-            <ImageIcon className="w-20 h-20 text-neutral-400 dark:text-neutral-700" />
-          </div>
-        )}
+        {/* Skeleton mientras carga */}
+        {(isLoading || (!bannerImageLoaded && hasValidBannerPicture)) &&
+          !bannerError && (
+            <div className="absolute inset-0 bg-neutral-300 dark:bg-neutral-800 animate-pulse flex items-center justify-center">
+              <ImageIcon className="w-20 h-20 text-neutral-400 dark:text-neutral-700" />
+            </div>
+          )}
 
-        {!isLoading && !bannerError && (
+        {/* Imagen - solo renderizar si hay URL válida */}
+        {!isLoading && hasValidBannerPicture && !bannerError && (
           <Image
-            src={userInfo?.bannerPicture}
+            src={userInfo.banner_picture}
             alt="Banner principal"
             width={851}
             height={315}
@@ -69,7 +82,8 @@ export default function HeaderMain() {
           />
         )}
 
-        {bannerError && (
+        {/* Fallback - mostrar cuando no hay imagen o hay error */}
+        {(!hasValidBannerPicture || bannerError) && !isLoading && (
           <div className="absolute inset-0 bg-neutral-300 dark:bg-neutral-800 flex items-center justify-center">
             <ImageIcon className="w-20 h-20 text-neutral-400 dark:text-neutral-600" />
           </div>

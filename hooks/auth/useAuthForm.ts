@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 export const useAuthForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const { setUserInfo } = useUserInfo();
+  const { setUserInfo, refreshUserData } = useUserInfo();
   const router = useRouter();
 
   const [loginFormData, setLoginFormData] = useState({
@@ -22,13 +22,6 @@ export const useAuthForm = () => {
     password: "",
     confirmPassword: "",
   });
-
-  // Test
-  // const testData = (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-  //   console.log(loginFormData, "loginFormData");
-  //   console.log(registerFormData, "registerFormData");
-  // };
 
   // Login
   const loginHandleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -46,7 +39,6 @@ export const useAuthForm = () => {
       });
 
       const data = await response.json();
-      // console.log(data);
 
       if (!response.ok) {
         setError(data.message);
@@ -57,26 +49,19 @@ export const useAuthForm = () => {
       setUserInfo(data.user);
 
       setError(null);
-
       toast.success("Login successful");
 
-      // limpiar el formulario
       setLoginFormData({
         username: "",
         password: "",
       });
 
-      // window.location.href = "/";
       router.push("/");
-      router.refresh();
     } catch (error) {
       console.error("Error de red:", error);
     } finally {
       setIsLoading(false);
     }
-
-    // console.log("loginHandleSubmit");
-    // console.log(loginFormData);
   };
 
   // Registro
@@ -84,6 +69,13 @@ export const useAuthForm = () => {
     e.preventDefault();
     setIsLoading(true);
     setError(null);
+
+    if (registerFormData.password !== registerFormData.confirmPassword) {
+      setError("Passwords don't match");
+      toast.error("Passwords don't match");
+      setIsLoading(false);
+      return;
+    }
 
     try {
       const response = await fetch("/api/auth/register", {
@@ -95,18 +87,22 @@ export const useAuthForm = () => {
       });
 
       const data = await response.json();
-      // console.log(data);
 
       if (!response.ok) {
         setError(data.message);
+        toast.error(data.message);
         throw new Error(data.message);
       }
 
-      setError(null);
+      if (data.user) {
+        setUserInfo(data.user);
+      } else {
+        await refreshUserData();
+      }
 
+      setError(null);
       toast.success("Registration successful");
 
-      // limpiar el formulario
       setRegisterFormData({
         username: "",
         email: "",
@@ -115,15 +111,11 @@ export const useAuthForm = () => {
       });
 
       router.push("/");
-      router.refresh();
     } catch (error) {
       console.error("Error de red:", error);
     } finally {
       setIsLoading(false);
     }
-
-    // console.log("registerHandleSubmit");
-    // console.log(registerFormData);
   };
 
   // Logout
@@ -137,20 +129,18 @@ export const useAuthForm = () => {
       });
 
       const data = await response.json();
-      // console.log(data);
 
       if (!response.ok) {
-        // setError(data.message);
         throw new Error(data.message);
       }
 
-      // setError(null);
+      setUserInfo(null);
 
-      // toast.success("Logout successful, redirecting...");
+      toast.success("Logout successful");
       router.push("/auth");
-      router.refresh();
     } catch (error) {
       console.error("Error de red:", error);
+      toast.error("Error during logout");
     }
   };
 
@@ -161,7 +151,6 @@ export const useAuthForm = () => {
     setLoginFormData,
     registerFormData,
     setRegisterFormData,
-    // testData,
     loginHandleSubmit,
     registerHandleSubmit,
     error,

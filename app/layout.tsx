@@ -6,6 +6,7 @@ import localFont from "next/font/local";
 import ToggleTheme from "@/components/ToggleTheme";
 import { Toaster } from "react-hot-toast";
 import { UserInfoProvider } from "@/contexts/UserInfoContext";
+import ThemedToaster from "@/components/ThemedToaster";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -46,7 +47,8 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <ToggleTheme />
-            <Toaster />
+            {/* <Toaster /> */}
+            <ThemedToaster />
 
             {children}
           </ThemeProvider>
