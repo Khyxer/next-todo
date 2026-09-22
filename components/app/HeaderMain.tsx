@@ -19,9 +19,9 @@ export default function HeaderMain() {
     userInfo?.banner_picture && userInfo.banner_picture.trim() !== "";
 
   return (
-    <header className="w-full max-h-[250px] relative select-none">
+    <header className="w-full max-h-40 sm:max-h-[250px] relative select-none">
       {/* Profile Picture */}
-      <div className="absolute w-28 aspect-square rounded-full bottom-0 left-14 transform translate-y-1/2 z-10 ring-6 ring-white dark:ring-neutral-950 overflow-hidden">
+      <div className="absolute w-20 sm:w-28 aspect-square rounded-full bottom-0 left-4 sm:left-14 transform translate-y-1/2 z-10 ring-4 sm:ring-6 ring-white dark:ring-neutral-950 overflow-hidden">
         <div className="relative w-full h-full">
           {/* Skeleton mientras carga */}
           {(isLoading || (!profileImageLoaded && hasValidProfilePicture)) &&
@@ -57,7 +57,7 @@ export default function HeaderMain() {
       </div>
 
       {/* Banner */}
-      <div className="relative w-full h-[250px] overflow-hidden rounded-b-4xl">
+      <div className="relative w-full h-40 sm:h-[250px] overflow-hidden rounded-b-4xl">
         {/* Skeleton mientras carga */}
         {(isLoading || (!bannerImageLoaded && hasValidBannerPicture)) &&
           !bannerError && (

@@ -13,7 +13,7 @@ export default function Auth() {
     error,
   } = useAuthForm();
   return (
-    <div className="flex items-center justify-center h-screen">
+    <div className="flex items-center justify-center min-h-screen p-4">
       <CardFormAuth
         isLogin={true}
         onSubmit={loginHandleSubmit}

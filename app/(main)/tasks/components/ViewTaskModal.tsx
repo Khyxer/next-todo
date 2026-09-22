@@ -46,7 +46,7 @@ export default function ViewTaskModal({
     >
       <div className="flex flex-col gap-5 pb-1 w-full">
         {/* Title + ID */}
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
           <h2 className="text-xl font-semibold leading-tight">{t.title}</h2>
 
           {/* Badges */}
@@ -114,7 +114,7 @@ export default function ViewTaskModal({
         <div className="border-t border-border border-dashed border-gray-200 dark:border-gray-500" />
 
         {/* Timestamps */}
-        <div className="flex gap-6">
+        <div className="flex flex-wrap gap-x-6 gap-y-3">
           {/* Due date */}
           <div className="flex gap-2 items-center flex-1">
             <Calendar className="w-4 h-4 shrink-0 text-muted-foreground" />

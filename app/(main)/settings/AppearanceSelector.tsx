@@ -87,7 +87,7 @@ export default function AppearanceSelector() {
   return (
     <div className="space-y-5">
       <h2 className="text-2xl font-bold">Appearance</h2>
-      <div className="flex gap-3">
+      <div className="grid grid-cols-3 gap-2 sm:flex sm:gap-3">
         {options.map((option) => {
           const Icon = option.icon;
           const isSelected = theme === option.value;
@@ -96,7 +96,7 @@ export default function AppearanceSelector() {
               key={option.value}
               onClick={() => setTheme(option.value)}
               className={`
-                relative flex flex-col gap-2 p-1 rounded-xl border-2 w-40 cursor-pointer transition-all duration-200
+                relative flex flex-col gap-2 p-1 rounded-xl border-2 w-full sm:w-40 min-w-0 cursor-pointer transition-all duration-200
                 ${
                   isSelected
                     ? "border-blue-500 dark:border-blue-400"

@@ -13,11 +13,11 @@ export default function ModalLayout({
 }) {
   return (
     <div
-      className="fixed z-50 top-0 left-0 w-full h-screen bg-neutral-950/70 flex items-center justify-center"
+      className="fixed z-50 top-0 left-0 w-full h-screen bg-neutral-950/70 flex items-center justify-center p-4"
       onClick={onClose}
     >
       <div
-        className={`flex flex-col gap-4 max-w-sm w-full px-5 py-4 rounded-xl bg-white border border-gray-300 dark:bg-neutral-900 dark:border-zinc-700 relative ${className}`}
+        className={`flex flex-col gap-4 max-w-sm w-full px-5 py-4 rounded-xl bg-white border border-gray-300 dark:bg-neutral-900 dark:border-zinc-700 relative max-h-[90vh] overflow-y-auto ${className}`}
         onClick={(e) => e.stopPropagation()}
       >
         <header className="flex items-center justify-between">

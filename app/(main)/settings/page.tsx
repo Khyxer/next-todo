@@ -23,7 +23,7 @@ export default function SettingsPage() {
 
   return (
     <main className=" w-full">
-      <header className="flex items-center pt-7 justify-between px-4 pb-5 border-b border-gray-200 dark:border-zinc-700 w-full sticky top-0 z-10">
+      <header className="flex items-center pt-7 justify-between px-4 pb-5 border-b border-gray-200 dark:border-zinc-700 w-full sticky top-14 xl:top-0 z-30">
         <div className="flex items-center gap-2">
           <div className="p-2 rounded-lg bg-gray-100 dark:bg-zinc-800">
             <Settings className="w-6 h-6" />
@@ -31,7 +31,7 @@ export default function SettingsPage() {
           <h1 className="text-2xl font-bold">Settings</h1>
         </div>
 
-        <button className="px-4 py-2 bg-gray-100 dark:bg-zinc-800 opacity-70 rounded-lg">
+        <button className="px-3 sm:px-4 py-2 text-sm sm:text-base bg-gray-100 dark:bg-zinc-800 opacity-70 rounded-lg">
           Apply changes
         </button>
       </header>

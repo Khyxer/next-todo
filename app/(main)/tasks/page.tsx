@@ -30,7 +30,7 @@ export default function Tasks() {
   );
 
   return (
-    <div className="w-full h-screen flex flex-col mx-auto max-w-4xl">
+    <div className="w-full h-[calc(100dvh-3.5rem)] xl:h-dvh flex flex-col mx-auto max-w-4xl">
       {isViewTaskOpen && selectedTask && (
         <ViewTaskModal
           task={selectedTask}

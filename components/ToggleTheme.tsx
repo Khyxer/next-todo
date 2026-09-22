@@ -5,7 +5,7 @@ export default function ToggleTheme() {
   const { setTheme } = useTheme();
 
   return (
-    <div className="fixed top-6 right-6">
+    <div className="fixed top-6 right-6 z-50">
       <button onClick={() => setTheme("light")}>
         <span>☀️</span>
       </button>

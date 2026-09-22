@@ -1,6 +1,5 @@
 import AsideMain from "@/components/app/AsideMain";
-import HeaderMain from "@/components/app/HeaderMain";
-import ToggleTheme from "@/components/ToggleTheme";
+import MobileNav from "@/components/app/MobileNav";
 import { TasksProvider } from "@/contexts/TasksContext";
 
 export default function MainLayout({
@@ -11,10 +10,9 @@ export default function MainLayout({
   return (
     <main className="flex-1 bg-neutral-50 dark:bg-neutral-950">
       <TasksProvider>
-        <ToggleTheme />
-        <div className="flex min-h-screen max-w-7xl mx-auto gap-12">
+        <MobileNav />
+        <div className="flex min-h-screen max-w-7xl mx-auto gap-12 px-4 sm:px-6 xl:px-0">
           <AsideMain />
-          {/* <HeaderMain /> */}
           {children}
         </div>
       </TasksProvider>

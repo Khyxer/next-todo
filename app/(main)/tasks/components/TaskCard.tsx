@@ -1,6 +1,8 @@
 "use client";
 
-import { Calendar, Tag, CheckCircle2, Eye, ZoomIn, Pencil, Trash2 } from "lucide-react";
+import { Calendar, Tag, CheckCircle2, Eye, ZoomIn, Pencil, Trash2, Clipboard, ClipboardCheck } from "lucide-react";
+import { useState } from "react";
+import { toast } from "react-hot-toast";
 import type { Task } from "@/hooks/useTasks";
 import { formatDate, formatPriority } from "@/utils/utilFormatters";
 import { priorityConfig, statusConfig } from "@/constants/constViewTasks";
@@ -22,11 +24,29 @@ export default function TaskCard({
   const status = statusConfig[task.status] ?? statusConfig.pending;
   const dueDate = formatDate(task.due_date);
 
+  const [isCopying, setIsCopying] = useState(false);
+
+  const handleCopyDescription = async () => {
+    if (!task.description) {
+      toast.error("This task has no description to copy");
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(task.description);
+      setIsCopying(true);
+      toast.success("Description copied to clipboard");
+      setTimeout(() => setIsCopying(false), 1500);
+    } catch (error) {
+      console.error("Error copying text: ", error);
+      toast.error("Failed to copy description");
+    }
+  };
+
   return (
-    <div className="rounded-xl border border-gray-200 dark:border-zinc-700 bg-white dark:bg-neutral-900 px-4 py-3 flex items-center gap-4">
+    <div className="rounded-xl border border-gray-200 dark:border-zinc-700 bg-white dark:bg-neutral-900 px-4 py-3 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
       {/* Priority indicator */}
       <span
-        className={`w-1 self-stretch rounded-full shrink-0 ${priority.bg}`}
+        className={`w-full h-1 sm:w-1 sm:self-stretch rounded-full shrink-0 ${priority.bg}`}
       />
 
       {/* Main content */}
@@ -52,7 +72,7 @@ export default function TaskCard({
           )}
         </div>
 
-        <div className="flex items-center gap-3 mt-0.5 text-sm text-neutral-400 dark:text-neutral-500">
+        <div className="flex items-center gap-3 mt-0.5 text-sm text-neutral-400 dark:text-neutral-500 min-w-0 flex-wrap">
           {task.description && <p className="truncate">{task.description}</p>}
           <div className="flex items-center gap-1 shrink-0">
             <Calendar className="w-3.5 h-3.5" />
@@ -62,7 +82,7 @@ export default function TaskCard({
       </div>
 
       {/* Status + actions */}
-      <div className="flex items-center gap-2 shrink-0">
+      <div className="flex items-center gap-2 shrink-0 flex-wrap sm:justify-end">
         {/* <span
           className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium border ${status.color} ${status.bg} ${status.border}`}
         >
@@ -77,6 +97,11 @@ export default function TaskCard({
           <ZoomIn className="w-4 h-4" />
           View
         </button> */}
+        <ExpandableButton
+          icon={isCopying ? ClipboardCheck : Clipboard}
+          label={isCopying ? "Copied" : "Copy"}
+          onClick={handleCopyDescription}
+        />
         <ExpandableButton
           icon={ZoomIn}
           label="View"
